@@ -5,10 +5,10 @@ MAINTAINER Harley Bussell <modmac@gmail.com>
 # Install ElasticSearch.
 RUN \
   cd /tmp && \
-  wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.2.1.tar.gz && \
-  tar xvzf elasticsearch-1.2.1.tar.gz && \
-  rm -f elasticsearch-1.2.1.tar.gz && \
-  mv /tmp/elasticsearch-1.2.1 /elasticsearch
+  wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.4.tar.gz && \
+  tar xvzf elasticsearch-1.4.4.tar.gz && \
+  rm -f elasticsearch-1.4.4.tar.gz && \
+  mv /tmp/elasticsearch-1.4.4 /elasticsearch
 
 # Install Fluentd.
 RUN echo "deb http://packages.treasure-data.com/precise/ precise contrib" > /etc/apt/sources.list.d/treasure-data.list && \
@@ -37,15 +37,16 @@ ADD config/etc/nginx/kibana.conf /etc/nginx/sites-enabled/default
 # Install Kibana.
 RUN \
   cd /tmp && \
-  wget https://download.elasticsearch.org/kibana/kibana/kibana-3.1.0.tar.gz && \
-  tar xvzf kibana-3.1.0.tar.gz && \
-  rm -f kibana-3.1.0.tar.gz && \
-  mv kibana-3.1.0 /usr/share/kibana
+  wget https://download.elasticsearch.org/kibana/kibana/kibana-4.0.1-linux-x64.tar.gz &&\
+  tar xvzf kibana-4.0.1-linux-x64.tar.gz && \
+  rm -f kibana-4.0.1-linux-x64.tar.gz && \
+  mv kibana-4.0.1-linux-x64 /usr/share/kibana
 
 #RUN cp -R /usr/share/kibana/* /
 
 # Copy kibana config.
-ADD config/etc/kibana/config.js /usr/share/kibana/config.js
+#ADD config/etc/kibana/config.js /usr/share/kibana/config.js
+ADD config/etc/kibana/kibana.yml /usr/share/kibana/config/kibana.yml
 
 # Install supervisord.
 
@@ -78,6 +79,9 @@ EXPOSE 9300
 
 # Expose Fluentd port.
 EXPOSE 24224
+
+# Expose Kibana port.
+EXPOSE 5601
 
 # Expose nginx http ports
 EXPOSE 80
